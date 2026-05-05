@@ -1,0 +1,74 @@
+_target_: verl.workers.config.rollout.AgenticAgentConfig
+
+activate_agent: true
+
+name: agentic_agent
+
+qwen_ip: xx.xxx.xx.xxx
+
+ports:
+  - 8000
+  - 8001
+  - 8002
+  - 8003
+  - 8004
+  - 8005
+  - 8006
+  - 8007
+
+tools:
+
+  _target_: verl.workers.config.rollout.ToolsConfig
+
+  call_limit: 3
+
+  max_workers: 64
+
+  timeout: 120
+
+  retry_count: 3
+
+  tool_instances:
+
+    _target_: verl.workers.config.rollout.ToolInstances
+  
+    python:
+
+      _target_: verl.workers.config.rollout.PythonTool
+
+      class_path: verl.workers.rollout.agent.tools.python_tool.PythonTool
+
+      params:
+
+        _target_: verl.workers.config.rollout.PythonToolParams
+
+        conda_path: /root/anaconda3
+
+        conda_env: verl
+    
+    search:
+
+      _target_: verl.workers.config.rollout.SearchTool
+
+      class_path: verl.workers.rollout.agent.tools.search_tool.SearchTool
+
+      params:
+      
+        _target_: verl.workers.config.rollout.SearchToolParams
+
+        host: xx.xxx.xx.xxx
+
+        ports:
+          - 8000
+          - 8001
+          - 8002
+          - 8003
+          - 8004
+          - 8005
+          - 8006
+          - 8007
+
+        max_results: 3
+
+        result_length: 1000
+
